@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#CBE6FF" />
+  <title>Real estate consultant — Sales KPIs & Lead Tracker</title>
+  <!-- SheetJS for real Excel (.xlsx, .xls, .ods, .csv, .tsv) parsing on mobile & desktop -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --baby-blue-1: #E6F3FF;
+      --baby-blue-2: #CBE6FF;
+      --baby-blue-3: #B7DCFF;
+      --navy: #0F172A;
+      --navy-soft: #1E293B;
+      --slate: #475569;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --orange: #EA580C;
+      --orange-soft: #FFF7ED;
+      --green: #16A34A;
+      --green-soft: #F0FDF4;
+      --red: #DC2626;
+      --red-soft: #FEF2F2;
+      --amber: #D97706;
+      --amber-soft: #FFFBEB;
+      --blue: #2563EB;
+      --blue-soft: #EFF6FF;
+      --whatsapp: #16A34A;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Cairo", "Tajawal", Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      min-height: 100vh;
+      direction: rtl;
+      overflow-x: hidden;
+    }
+
+    /* Baby Blue Sign In / Sign Up Screen (#E6F3FF to #B7DCFF) */
+    .auth-screen {
+      min-height: 100vh;
+      width: 100%;
+      background:
+        radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 45%),
+        radial-gradient(circle at 86% 84%, rgba(147, 197, 253, 0.52) 0%, rgba(147, 197, 253, 0) 50%),
+        linear-gradient(155deg, #E6F3FF 0%, #CBE6FF 48%, #B7DCFF 100%);
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 14px 36px;
+    }
+
+    .auth-bg-shapes {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .auth-bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(37, 99, 235, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(circle at 50% 45%, #000 35%, transparent 90%);
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(8px);
+    }
+
+    .blob-1 {
+      width: 260px;
+      height: 260px;
+      top: -60px;
+      right: -50px;
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .blob-2 {
+      width: 300px;
+      height: 300px;
+      bottom: -90px;
+      left: -70px;
+      background: rgba(125, 188, 255, 0.45);
+    }
+
+    .blob-3 {
+      width: 140px;
+      height: 140px;
+      top: 24%;
+      left: 8%;
+      background: rgba(255, 255, 255, 0.42);
+    }
+
+    .auth-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .auth-brand-banner {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .auth-logo-badge {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 10px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--navy) 0%, #1D4ED8 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.16);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+    }
+
+    .auth-brand-banner h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .auth-brand-banner p {
+      margin: 4px 0 0;
+      font-size: 12.5px;
+      color: #1E3A8A;
+      font-weight: 600;
+    }
+
+    .auth-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    }
+
+    .auth-mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #E0F0FF;
+      padding: 5px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+    }
+
+    .auth-mode-btn {
+      border: none;
+      background: transparent;
+      color: var(--slate);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .auth-mode-btn.active {
+      background: #FFFFFF;
+      color: var(--navy);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--navy-soft);
+      margin-bottom: 5px;
+    }
+
+    .field-input, .field-select, .field-textarea {
+      width: 100%;
+      max-width: 100%;
+      border: 1.5px solid #CBD5E1;
+      background: #FFFFFF;
+      color: var(--navy);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 13.5px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .field-input:focus, .field-select:focus, .field-textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .field-textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
+
+    .btn-primary {
+      width: 100%;
+      border: none;
+      border-radius: 13px;
+      padding: 11px 14px;
+      background: linear-gradient(135deg, var(--orange) 0%, #C2410C 100%);
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(234, 88, 12, 0.25);
+      transition: transform 0.12s ease;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.985);
+    }
+
+    .btn-navy {
+      border: none;
+      border-radius: 11px;
+      padding: 8px 12px;
+      background: var(--navy);
+      color: #fff;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-soft {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 8px 12px;
+      background: #F8FAFC;
+      color: var(--navy);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-danger-soft {
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 6px 10px;
+      background: var(--red-soft);
+      color: var(--red);
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .auth-quick-box {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #CBD5E1;
+    }
+
+    .auth-quick-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .auth-quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .quick-acc-btn {
+      border: 1px solid #BAE6FD;
+      background: #F0F9FF;
+      color: #0C4A6E;
+      border-radius: 11px;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: right;
+      line-height: 1.35;
+    }
+
+    .quick-acc-btn small {
+      display: block;
+      font-weight: 500;
+      color: #0369A1;
+      font-size: 10.5px;
+    }
+
+    .auth-error {
+      background: var(--red-soft);
+      color: var(--red);
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 8px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    /* Main Application Shell */
+    .app-shell {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--bg);
+      padding-bottom: 92px;
+      display: none;
+    }
+
+    .app-shell.visible {
+      display: block;
+    }
+
+    .top-header {
+      background: linear-gradient(135deg, var(--navy) 0%, #1E293B 100%);
+      color: #fff;
+      padding: 14px 14px 16px;
+      border-bottom-left-radius: 22px;
+      border-bottom-right-radius: 22px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
+    }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: #93C5FD;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .btn-add-lead {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      padding: 8px 11px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-logout {
+      background: rgba(255, 255, 255, 0.12);
+      color: #E2E8F0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 11px;
+      padding: 7px 9px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .admin-tools-strip {
+      margin-top: 11px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 13px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-manage-agents {
+      border: none;
+      background: #F59E0B;
+      color: #0F172A;
+      border-radius: 9px;
+      padding: 6px 10px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .content-pad {
+      padding: 12px 12px 0;
+    }
+
+    .search-box {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      border-radius: 13px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .filter-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+
+    .filter-toolbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--slate);
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .chip.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    .chip-sheet {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border-color: #BFDBFE;
+    }
+
+    .chip-sheet.active {
+      background: #1D4ED8;
+      color: #fff;
+      border-color: #1D4ED8;
+    }
+
+    .lead-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    .lead-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .lead-name {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 0 0 3px;
+    }
+
+    .lead-meta {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .stage-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 10.5px;
+      font-weight: 800;
+      background: #F1F5F9;
+      color: var(--navy-soft);
+      white-space: nowrap;
+    }
+
+    .stage-incoming { background: #FEF3C7; color: #92400E; }
+    .stage-won { background: var(--green-soft); color: var(--green); }
+    .stage-lost { background: var(--red-soft); color: var(--red); }
+    .stage-meeting { background: #F3E8FF; color: #7E22CE; }
+
+    .assign-box {
+      margin-top: 9px;
+      padding: 8px 10px;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .assign-box select {
+      border: 1px solid #F59E0B;
+      background: #FFFFFF;
+      color: var(--navy);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 9px;
+      border-top: 1px solid #F1F5F9;
+      flex-wrap: wrap;
+    }
+
+    .status-btns {
+      display: flex;
+      gap: 5px;
+    }
+
+    .st-btn {
+      border: 1px solid var(--border);
+      background: #F8FAFC;
+      color: var(--slate);
+      border-radius: 9px;
+      padding: 5px 8px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .st-btn.active-hot { background: var(--green-soft); color: var(--green); border-color: #86EFAC; }
+    .st-btn.active-cold { background: var(--amber-soft); color: var(--amber); border-color: #FCD34D; }
+    .st-btn.active-trash { background: var(--red-soft); color: var(--red); border-color: #FCA5A5; }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 9px;
+      background: #F8FAFC;
+      padding: 7px 10px;
+      border-radius: 11px;
+    }
+
+    .phone-text {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--navy);
+      direction: ltr;
+      unicode-bidi: embed;
+    }
+
+    .action-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-call, .icon-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 9px;
+      padding: 5px 9px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .icon-call {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid #BFDBFE;
+    }
+
+    .icon-wa {
+      background: var(--green-soft);
+      color: var(--whatsapp);
+      border: 1px solid #BBF7D0;
+    }
+
+    .feedback-preview {
+      margin-top: 8px;
+      background: #FFFBEB;
+      border-right: 3px solid var(--amber);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--navy-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .link-btn {
+      border: none;
+      background: transparent;
+      color: var(--orange);
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .card-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .metric-tile {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .metric-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-top: 3px;
+    }
+
+    .progress-wrap {
+      background: #E2E8F0;
+      border-radius: 999px;
+      height: 9px;
+      overflow: hidden;
+      margin: 7px 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--orange);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .sheet-file-card {
+      border: 1px solid #CBD5E1;
+      background: #F8FAFC;
+      border-radius: 13px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .sheet-file-card.selected {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .sheet-row-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #fff;
+    }
+
+    .upload-drop-label {
+      display: block;
+      border: 2px dashed #93C5FD;
+      background: #F0F9FF;
+      color: #1E3A8A;
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      display: none;
+      justify-content: center;
+      z-index: 40;
+      box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    .bottom-nav.visible {
+      display: flex;
+    }
+
+    .bottom-nav-inner {
+      width: 100%;
+      max-width: 540px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .nav-btn {
+      border: none;
+      background: transparent;
+      padding: 9px 4px 11px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-btn.active {
+      color: var(--orange);
+    }
+
+    .nav-badge {
+      position: absolute;
+      top: 4px;
+      left: 22%;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 1px 6px;
+    }
+
+    /* Modal & Inline Notice */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.52);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 60;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 540px;
+      max-height: 88vh;
+      overflow-y: auto;
+      background: #fff;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      padding: 16px 15px 28px;
+      box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.22);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 15.5px;
+      font-weight: 800;
+    }
+
+    .close-x {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #F8FAFC;
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .inline-msg {
+      background: var(--red-soft);
+      color: var(--red);
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .inline-ok {
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid #BBF7D0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tag-pill {
+      border: 1px solid var(--border);
+      background: #F8FAFC;
+      color: var(--navy-soft);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tag-pill.selected {
+      background: var(--orange);
+      color: #fff;
+      border-color: var(--orange);
+    }
+
+    .feedback-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 11px;
+      margin-bottom: 8px;
+      background: #F8FAFC;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      background: #fff;
+      border: 1px dashed #CBD5E1;
+      border-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIGN IN / SIGN UP SCREEN WITH BABY BLUE BACKGROUND -->
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-bg-shapes" aria-hidden="true">
+      <div class="auth-bg-grid"></div>
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <div class="auth-container">
+      <div class="auth-brand-banner">
+        <div class="auth-logo-badge">🏢</div>
+        <h1>Real estate consultant</h1>
+        <p>توزيع الليدز • الفيدباك • البايب لاين • مؤشرات الأداء</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-mode-switch">
+          <button type="button" id="tabLoginBtn" class="auth-mode-btn active" onclick="switchAuthMode('login')">تسجيل الدخول</button>
+          <button type="button" id="tabSignupBtn" class="auth-mode-btn" onclick="switchAuthMode('signup')">إنشاء حساب جديد</button>
+        </div>
+
+        <div id="authError" class="auth-error"></div>
+
+        <!-- Sign In Form -->
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="field-group">
+            <label class="field-label" for="loginEmail">البريد الإلكتروني</label>
+            <input id="loginEmail" type="email" class="field-input" placeholder="name@company.com" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="loginPassword">كلمة المرور</label>
+            <input id="loginPassword" type="password" class="field-input" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn-primary">دخول إلى Real estate consultant</button>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signupForm" style="display:none;" onsubmit="handleSignup(event)">
+          <div class="field-group">
+            <label class="field-label" for="signupName">الاسم الكامل</label>
+            <input id="signupName" type="text" class="field-input" placeholder="مثال: سارة محمود" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="signupEmail">البريد الإلكتروني</label>
+            <input id="signupEmail" type="email" class="field-input" placeholder="agent@company.com" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="signupPassword">كلمة المرور</label>
+            <input id="signupPassword" type="password" class="field-input" placeholder="4 أحرف أو أكثر" minlength="4" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="signupRole">نوع الحساب</label>
+            <select id="signupRole" class="field-select">
+              <option value="agent">إيجنت مبيعات (Agent)</option>
+              <option value="admin">مدير / أدمن (Admin)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary">إنشاء الحساب والدخول</button>
+        </form>
+
+        <div class="auth-quick-box">
+          <div class="auth-quick-title">دخول مباشر للحسابات الأساسية</div>
+          <div class="auth-quick-grid">
+            <button type="button" class="quick-acc-btn" onclick="quickDemoLogin('admin')">
+              👑 حساب الأدمن
+              <small>admin@realestate.app</small>
+            </button>
+            <button type="button" class="quick-acc-btn" onclick="quickDemoLogin('agent')">
+              👤 حساب الإيجنت
+              <small>agent1@realestate.app</small>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN APPLICATION -->
+  <div id="appShell" class="app-shell">
+    <header class="top-header">
+      <div class="top-row">
+        <div>
+          <h1 class="brand-title">Real estate consultant</h1>
+          <div id="sessionInfo" class="brand-sub">جاري التحميل...</div>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn-add-lead" onclick="openAddLeadModal()">+ ليد جديد</button>
+          <button type="button" class="btn-logout" onclick="logoutUser()">تسجيل خروج</button>
+        </div>
+      </div>
+
+      <!-- Admin-only account & agent management bar (never shown to Agents) -->
+      <div id="adminControlsBar" class="admin-tools-strip" style="display:none;">
+        <span style="font-size:11.5px; font-weight:700; color:#FDE68A;">👑 لوحة الأدمن: توزيع الليدات وإدارة حسابات الإيجنت</span>
+        <button type="button" class="btn-manage-agents" onclick="openManageAgentsModal()">👥 إدارة الإيجنت</button>
+      </div>
+    </header>
+
+    <main id="mainView" class="content-pad"></main>
+  </div>
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav id="bottomNav" class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button type="button" id="navLeads" class="nav-btn active" onclick="switchTab('leads')">
+        👥 الليدز
+      </button>
+      <button type="button" id="navFollowups" class="nav-btn" onclick="switchTab('followups')">
+        <span id="followupBadge" class="nav-badge" style="display:none;">0</span>
+        ⏰ المتابعات
+      </button>
+      <button type="button" id="navPipeline" class="nav-btn" onclick="switchTab('pipeline')">
+        🔀 البايب لاين
+      </button>
+      <button type="button" id="navKpis" class="nav-btn" onclick="switchTab('kpis')">
+        📊 الأداء والعمولة
+      </button>
+    </div>
+  </nav>
+
+  <!-- MODAL BACKDROP -->
+  <div id="modalBackdrop" class="modal-backdrop" onclick="handleBackdropClick(event)">
+    <div id="modalSheet" class="modal-sheet" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <script>
+    // Production storage namespace with automatic local persistence & structured initial seed
+    const STORAGE_KEY = "real_estate_consultant_prod_state_v1";
+    const FEEDBACK_TAGS = [
+      "مهتم جاد",
+      "طلب تفاصيل/كتالوج",
+      "يريد معاينة",
+      "ميزانية أقل",
+      "مؤجل للشهر القادم",
+      "لم يرد",
+      "رقم خاطئ"
+    ];
+
+    const LEAD_SOURCES = [
+      "إعلان فيسبوك",
+      "خط ساخن",
+      "دايركت",
+      "ليد علاقات شخصية",
+      "ترشيح"
+    ];
+
+    const PIPELINE_STAGES = [
+      { id: "new", label: "ليد جديد / قيد التوزيع" },
+      { id: "contacted", label: "تم التواصل" },
+      { id: "meeting", label: "ميتينج / معاينة" },
+      { id: "closed_won", label: "صفقة ناجحة ✓" },
+      { id: "closed_lost", label: "صفقة غير ناجحة ✕" }
+    ];
+
+    function defaultState() {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+      return {
+        currentUser: null,
+        activeTab: "leads",
+        interestFilter: "all", // all | incoming | hot | cold | trash
+        searchQuery: "",
+        leadSheetsOpen: false,
+        selectedSheetId: null,
+        users: [
+          { id: "u_admin", name: "مدير المبيعات (أدمن)", email: "admin@realestate.app", password: "123", role: "admin", active: true },
+          { id: "u_agent1", name: "كريم حسن (إيجنت)", email: "agent1@realestate.app", password: "123", role: "agent", active: true },
+          { id: "u_agent2", name: "مريم عادل (إيجنت)", email: "agent2@realestate.app", password: "123", role: "agent", active: true }
+        ],
+        kpiTargets: {
+          dailyCallsTarget: 250,
+          weeklyMeetingsTarget: 50,
+          dailyCallsDone: 24,
+          weeklyMeetingsDone: 8
+        },
+        commissionSim: {
+          mode: "company", // company | direct
+          unitMillions: 6
+        },
+        // Agent sheets are strictly private to that agent (ownerId = agent.id, isPrivateToAgent = true).
+        // Admin CANNOT view or edit agent-uploaded sheets.
+        leadSheets: [
+          {
+            id: "sheet_admin_1",
+            name: "حملة الساحل الشمالي - واردة للأدمن.xlsx",
+            ownerId: "u_admin",
+            isPrivateToAgent: false,
+            uploadedAt: todayStr,
+            rows: [
+              { id: "sr_1", name: "م. شريف الدسوقي", phone: "01065432198", interest: "hot", feedback: "مهتم بشاليه في سيدي عبدالرحمن", selectedToday: true, calledToday: false, promotedLeadId: null },
+              { id: "sr_2", name: "أ. نرمين العوضي", phone: "01099887766", interest: "hot", feedback: "تبحث عن تاون هاوس بمقدم 10%", selectedToday: true, calledToday: false, promotedLeadId: null }
+            ]
+          },
+          {
+            id: "sheet_agent1_priv",
+            name: "شيت خاص - كريم حسن.xlsx",
+            ownerId: "u_agent1",
+            isPrivateToAgent: true,
+            uploadedAt: todayStr,
+            rows: [
+              { id: "sr_a1", name: "أ. تامر سعيد", phone: "01022334455", interest: "hot", feedback: "شيت خاص بكريم حسن فقط وغير مرئي للأدمن", selectedToday: true, calledToday: false, promotedLeadId: null }
+            ]
+          },
+          {
+            id: "sheet_agent2_priv",
+            name: "شيت خاص - مريم عادل.csv",
+            ownerId: "u_agent2",
+            isPrivateToAgent: true,
+            uploadedAt: yesterdayStr,
+            rows: [
+              { id: "sr_a2", name: "أ. ندى كمال", phone: "01277665544", interest: "hot", feedback: "شيت خاص بمريم عادل فقط", selectedToday: false, calledToday: false, promotedLeadId: null }
+            ]
+          }
+        ],
+        // Incoming company leads arrive at Admin first (assignedAgentId = null).
+        // Admin distributes them to specific Agents.
+        leads: [
+          {
+            id: "L_INC_1",
+            name: "م. هاني عبدالمجيد",
+            phone: "01011998877",
+            source: "إعلان فيسبوك",
+            campaign: "رأس الحكمة - وارد جديد",
+            cost: 300,
+            unitValueMillions: 9.0,
+            interest: "hot",
+            stage: "new",
+            assignedAgentId: null,
+            outcomeReason: "",
+            followupDate: todayStr,
+            feedbacks: [
+              { id: "fb_inc1", tag: "مهتم جاد", note: "وصل إلى صندوق ليدات الأدمن بانتظار التوزيع على إيجنت.", time: "اليوم" }
+            ]
+          },
+          {
+            id: "L_INC_2",
+            name: "أ. ياسمين إبراهيم",
+            phone: "01155443322",
+            source: "خط ساخن",
+            campaign: "اليكس ويست - وارد جديد",
+            cost: 280,
+            unitValueMillions: 7.5,
+            interest: "hot",
+            stage: "new",
+            assignedAgentId: null,
+            outcomeReason: "",
+            followupDate: todayStr,
+            feedbacks: [
+              { id: "fb_inc2", tag: "طلب تفاصيل/كتالوج", note: "ليد وارد للأدمن جاهز للإرسال إلى إيجنت.", time: "اليوم" }
+            ]
+          },
+          {
+            id: "L_ASG_1",
+            name: "د. طارق المنشاوي",
+            phone: "01004589211",
+            source: "إعلان فيسبوك",
+            campaign: "سيدي عبدالرحمن",
+            cost: 350,
+            unitValueMillions: 11.0,
+            interest: "hot",
+            stage: "meeting",
+            assignedAgentId: "u_agent1",
+            outcomeReason: "",
+            followupDate: todayStr,
+            feedbacks: [
+              { id: "fb_asg1", tag: "يريد معاينة", note: "تم إرساله لكريم حسن وحدد موعد معاينة.", time: "أمس" }
+            ]
+          },
+          {
+            id: "L_ASG_2",
+            name: "أ. سامح عبدالحميد",
+            phone: "01119823410",
+            source: "إعلان فيسبوك",
+            campaign: "سموحة",
+            cost: 300,
+            unitValueMillions: 5.5,
+            interest: "cold",
+            stage: "closed_lost",
+            assignedAgentId: "u_agent1",
+            outcomeReason: "الميزانية المتاحة أقل من أقل وحدة متاحة بالمشروع.",
+            followupDate: "",
+            feedbacks: [
+              { id: "fb_asg2", tag: "ميزانية أقل", note: "تم إغلاق الصفقة مع توضيح السبب.", time: "منذ يومين" }
+            ]
+          },
+          {
+            id: "L_ASG_3",
+            name: "أ. فريدة محمود",
+            phone: "01088776655",
+            source: "ترشيح",
+            campaign: "الساحل الشمالي",
+            cost: 250,
+            unitValueMillions: 8.0,
+            interest: "hot",
+            stage: "closed_won",
+            assignedAgentId: "u_agent2",
+            outcomeReason: "تم حجز الوحدة وسداد جدية الحجز بنجاح.",
+            followupDate: "",
+            feedbacks: [
+              { id: "fb_asg3", tag: "مهتم جاد", note: "صفقة ناجحة مسجلة باسم مريم عادل.", time: "منذ 3 أيام" }
+            ]
+          }
+        ]
+      };
+    }
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        const base = defaultState();
+        const usersList = Array.isArray(parsed.users) && parsed.users.length
+          ? parsed.users.map(u => ({ ...u, active: u.active !== false }))
+          : base.users;
+
+        return {
+          ...base,
+          ...parsed,
+          kpiTargets: { ...base.kpiTargets, ...(parsed.kpiTargets || {}) },
+          commissionSim: { ...base.commissionSim, ...(parsed.commissionSim || {}) },
+          users: usersList,
+          leadSheets: Array.isArray(parsed.leadSheets) ? parsed.leadSheets : base.leadSheets,
+          leads: Array.isArray(parsed.leads) ? parsed.leads : base.leads
+        };
+      } catch (err) {
+        return defaultState();
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (err) {
+        // Ignore storage write errors
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function cleanPhone(phone) {
+      return String(phone || "").replace(/[^\d+]/g, "");
+    }
+
+    function waLink(phone) {
+      let digits = String(phone || "").replace(/\D/g, "");
+      if (digits.startsWith("01") && digits.length === 11) {
+        digits = "20" + digits;
+      }
+      return "https://wa.me/" + digits;
+    }
+
+    function isAdmin() {
+      return Boolean(state.currentUser && state.currentUser.role === "admin");
+    }
+
+    function getAgents() {
+      return state.users.filter(u => u.role === "agent" && u.active !== false);
+    }
+
+    function getAllAgentAccounts() {
+      return state.users.filter(u => u.role === "agent");
+    }
+
+    function getAgentName(agentId) {
+      if (!agentId) return "صندوق ليدات الأدمن (غير موزّع)";
+      const found = state.users.find(u => u.id === agentId);
+      return found ? found.name : "إيجنت";
+    }
+
+    /* AUTHENTICATION */
+    function switchAuthMode(mode) {
+      document.getElementById("authError").style.display = "none";
+      const isLogin = mode === "login";
+      document.getElementById("tabLoginBtn").classList.toggle("active", isLogin);
+      document.getElementById("tabSignupBtn").classList.toggle("active", !isLogin);
+      document.getElementById("loginForm").style.display = isLogin ? "block" : "none";
+      document.getElementById("signupForm").style.display = isLogin ? "none" : "block";
+    }
+
+    function showAuthError(msg) {
+      const el = document.getElementById("authError");
+      el.textContent = msg;
+      el.style.display = "block";
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+      const pass = document.getElementById("loginPassword").value;
+      const user = state.users.find(u => u.email.toLowerCase() === email && u.password === pass);
+      if (!user) {
+        showAuthError("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
+        return;
+      }
+      if (user.active === false) {
+        showAuthError("هذا الحساب موقوف حاليًا. تواصل مع مدير النظام (الأدمن).");
+        return;
+      }
+      state.currentUser = { id: user.id, name: user.name, email: user.email, role: user.role };
+      state.activeTab = "leads";
+      state.interestFilter = "all";
+      state.leadSheetsOpen = false;
+      state.selectedSheetId = null;
+      saveState();
+      syncShellVisibility();
+    }
+
+    function handleSignup(e) {
+      e.preventDefault();
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim().toLowerCase();
+      const password = document.getElementById("signupPassword").value;
+      const role = document.getElementById("signupRole").value === "admin" ? "admin" : "agent";
+
+      if (state.users.some(u => u.email.toLowerCase() === email)) {
+        showAuthError("هذا البريد الإلكتروني مسجل بالفعل.");
+        return;
+      }
+
+      const newUser = {
+        id: (role === "admin" ? "u_admin_" : "u_agent_") + Date.now(),
+        name,
+        email,
+        password,
+        role,
+        active: true
+      };
+      state.users.push(newUser);
+      state.currentUser = { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role };
+      state.activeTab = "leads";
+      state.interestFilter = "all";
+      state.leadSheetsOpen = false;
+      state.selectedSheetId = null;
+      saveState();
+      syncShellVisibility();
+    }
+
+    function quickDemoLogin(role) {
+      const target = state.users.find(u => u.role === role && u.active !== false) || state.users[0];
+      if (!target) return;
+      state.currentUser = { id: target.id, name: target.name, email: target.email, role: target.role };
+      state.activeTab = "leads";
+      state.interestFilter = "all";
+      state.leadSheetsOpen = false;
+      state.selectedSheetId = null;
+      saveState();
+      syncShellVisibility();
+    }
+
+    function logoutUser() {
+      closeModal();
+      state.currentUser = null;
+      state.leadSheetsOpen = false;
+      state.selectedSheetId = null;
+      saveState();
+      syncShellVisibility();
+    }
+
+    function syncShellVisibility() {
+      const loggedIn = Boolean(state.currentUser);
+      document.getElementById("authScreen").style.display = loggedIn ? "none" : "flex";
+      document.getElementById("appShell").classList.toggle("visible", loggedIn);
+      document.getElementById("bottomNav").classList.toggle("visible", loggedIn);
+
+      if (loggedIn) {
+        const adminRole = isAdmin();
+        document.getElementById("sessionInfo").textContent =
+          `${state.currentUser.name} (${state.currentUser.email}) • ${adminRole ? "حساب أدمن" : "حساب إيجنت"}`;
+
+        // Strict isolation: Agent never sees any role switcher, Admin switcher, or Agent management button.
+        document.getElementById("adminControlsBar").style.display = adminRole ? "flex" : "none";
+        if (!adminRole && state.interestFilter === "incoming") {
+          state.interestFilter = "all";
+        }
+
+        document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+        const activeBtn = document.getElementById({
+          leads: "navLeads",
+          followups: "navFollowups",
+          pipeline: "navPipeline",
+          kpis: "navKpis"
+        }[state.activeTab] || "navLeads");
+        if (activeBtn) activeBtn.classList.add("active");
+
+        updateFollowupBadge();
+        renderMain();
+      }
+    }
+
+    /* ADMIN AGENT ACCOUNT MANAGEMENT (CREATE, VIEW, EDIT, ACTIVATE/DEACTIVATE, REMOVE) */
+    function openManageAgentsModal() {
+      if (!isAdmin()) return;
+      const agents = getAllAgentAccounts();
+
+      const listHtml = agents.length
+        ? agents.map(ag => {
+            const assignedLeadsCount = state.leads.filter(l => l.assignedAgentId === ag.id).length;
+            return `
+              <div class="sheet-row-item" style="margin-bottom:8px;">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+                  <div>
+                    <div style="font-size:13.5px; font-weight:800;">
+                      👤 ${escapeHtml(ag.name)}
+                      <span class="stage-badge ${ag.active !== false ? "stage-won" : "stage-lost"}" style="margin-right:4px;">
+                        ${ag.active !== false ? "نشط" : "موقوف"}
+                      </span>
+                    </div>
+                    <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">
+                      البريد: <span dir="ltr">${escapeHtml(ag.email)}</span> • كلمة السر: <span dir="ltr">${escapeHtml(ag.password)}</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--slate); font-weight:700; margin-top:2px;">
+                      الليدات الموزعة له: ${assignedLeadsCount}
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
+                    <button type="button" class="btn-soft" style="padding:5px 8px; font-size:11px;" onclick="openEditAgentModal('${ag.id}')">✏️ تعديل</button>
+                    <button type="button" class="btn-soft" style="padding:5px 8px; font-size:11px;" onclick="toggleAgentActive('${ag.id}')">
+                      ${ag.active !== false ? "إيقاف" : "تفعيل"}
+                    </button>
+                    <button type="button" class="btn-danger-soft" onclick="removeAgentAccount('${ag.id}')">حذف</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join("")
+        : `<div class="empty-state">لا توجد حسابات إيجنت مسجلة بعد.</div>`;
+
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">👑 إدارة حسابات الإيجنت (${agents.length})</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+
+        <div id="agentsModalMsg" class="inline-msg"></div>
+
+        <form onsubmit="handleCreateAgentByAdmin(event)" style="background:#F8FAFC; border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:14px;">
+          <div style="font-size:13px; font-weight:800; margin-bottom:8px;">+ إنشاء حساب إيجنت جديد</div>
+          <div class="field-group">
+            <label class="field-label">اسم الإيجنت *</label>
+            <input id="newAgentName" class="field-input" placeholder="مثال: أ. أحمد سمير" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">البريد الإلكتروني للإيجنت *</label>
+            <input id="newAgentEmail" type="email" class="field-input" placeholder="agent3@realestate.app" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">كلمة المرور *</label>
+            <input id="newAgentPassword" type="text" class="field-input" placeholder="كلمة مرور للإيجنت" minlength="4" required />
+          </div>
+          <button type="submit" class="btn-primary">إضافة حساب الإيجنت</button>
+        </form>
+
+        <h4 style="margin:0 0 8px; font-size:13px; font-weight:800;">قائمة الإيجنت التابعين للأدمن</h4>
+        ${listHtml}
+      `);
+    }
+
+    function handleCreateAgentByAdmin(e) {
+      e.preventDefault();
+      if (!isAdmin()) return;
+      const errEl = document.getElementById("agentsModalMsg");
+      errEl.style.display = "none";
+
+      const name = document.getElementById("newAgentName").value.trim();
+      const email = document.getElementById("newAgentEmail").value.trim().toLowerCase();
+      const password = document.getElementById("newAgentPassword").value;
+
+      if (state.users.some(u => u.email.toLowerCase() === email)) {
+        errEl.textContent = "هذا البريد الإلكتروني مستخدم بالفعل لحساب آخر.";
+        errEl.style.display = "block";
+        return;
+      }
+
+      state.users.push({
+        id: "u_agent_" + Date.now(),
+        name,
+        email,
+        password,
+        role: "agent",
+        active: true
+      });
+      saveState();
+      openManageAgentsModal();
+      renderMain();
+    }
+
+    function openEditAgentModal(agentId) {
+      if (!isAdmin()) return;
+      const ag = state.users.find(u => u.id === agentId && u.role === "agent");
+      if (!ag) return;
+
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">✏️ تعديل حساب الإيجنت</h3>
+          <button type="button" class="close-x" onclick="openManageAgentsModal()">✕</button>
+        </div>
+        <form onsubmit="saveEditedAgent(event, '${agentId}')">
+          <div class="field-group">
+            <label class="field-label">الاسم الكامل</label>
+            <input id="editAgentName" class="field-input" value="${escapeHtml(ag.name)}" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">البريد الإلكتروني</label>
+            <input id="editAgentEmail" type="email" class="field-input" value="${escapeHtml(ag.email)}" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">كلمة المرور</label>
+            <input id="editAgentPassword" type="text" class="field-input" value="${escapeHtml(ag.password)}" minlength="4" required />
+          </div>
+          <button type="submit" class="btn-primary">حفظ بيانات الإيجنت</button>
+        </form>
+      `);
+    }
+
+    function saveEditedAgent(e, agentId) {
+      e.preventDefault();
+      if (!isAdmin()) return;
+      const ag = state.users.find(u => u.id === agentId && u.role === "agent");
+      if (!ag) return;
+
+      ag.name = document.getElementById("editAgentName").value.trim();
+      ag.email = document.getElementById("editAgentEmail").value.trim().toLowerCase();
+      ag.password = document.getElementById("editAgentPassword").value;
+      saveState();
+      openManageAgentsModal();
+      renderMain();
+    }
+
+    function toggleAgentActive(agentId) {
+      if (!isAdmin()) return;
+      const ag = state.users.find(u => u.id === agentId && u.role === "agent");
+      if (!ag) return;
+      ag.active = ag.active === false ? true : false;
+      saveState();
+      openManageAgentsModal();
+      renderMain();
+    }
+
+    function removeAgentAccount(agentId) {
+      if (!isAdmin()) return;
+      state.leads.forEach(l => {
+        if (l.assignedAgentId === agentId) {
+          l.assignedAgentId = null;
+          l.stage = "new";
+        }
+      });
+      state.users = state.users.filter(u => u.id !== agentId);
+      saveState();
+      openManageAgentsModal();
+      renderMain();
+    }
+
+    /* NAVIGATION & VISIBILITY RULES */
+    function switchTab(tab) {
+      state.activeTab = tab;
+      if (tab !== "leads") {
+        state.leadSheetsOpen = false;
+      }
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+      const activeBtn = document.getElementById({
+        leads: "navLeads",
+        followups: "navFollowups",
+        pipeline: "navPipeline",
+        kpis: "navKpis"
+      }[tab]);
+      if (activeBtn) activeBtn.classList.add("active");
+      saveState();
+      renderMain();
+    }
+
+    // Admin sees all leads (including incoming unassigned leads in صندوق ليدات الأدمن).
+    // Agent sees only leads assigned to that specific agent account.
+    function getVisibleLeads() {
+      if (!state.currentUser) return [];
+      if (isAdmin()) return state.leads;
+      return state.leads.filter(l => l.assignedAgentId === state.currentUser.id);
+    }
+
+    // STRICT PRIVACY:
+    // Sheets uploaded by an Agent belong ONLY to that Agent (ownerId = agent.id)
+    // and are completely invisible and uneditable by Admin.
+    function getVisibleSheets() {
+      if (!state.currentUser) return [];
+      if (isAdmin()) {
+        return state.leadSheets.filter(s => !s.isPrivateToAgent);
+      }
+      return state.leadSheets.filter(s => s.ownerId === state.currentUser.id);
+    }
+
+    function updateFollowupBadge() {
+      const today = new Date().toISOString().slice(0, 10);
+      const due = getVisibleLeads().filter(l =>
+        l.interest !== "trash" &&
+        l.stage !== "closed_won" &&
+        l.stage !== "closed_lost" &&
+        l.followupDate &&
+        l.followupDate <= today
+      );
+      const badge = document.getElementById("followupBadge");
+      if (due.length > 0) {
+        badge.style.display = "inline-block";
+        badge.textContent = due.length;
+      } else {
+        badge.style.display = "none";
+      }
+    }
+
+    function renderMain() {
+      const container = document.getElementById("mainView");
+      if (state.activeTab === "leads") {
+        container.innerHTML = state.leadSheetsOpen ? renderLeadSheetsWorkspace() : renderLeadsTab();
+      } else if (state.activeTab === "followups") {
+        container.innerHTML = renderFollowupsTab();
+      } else if (state.activeTab === "pipeline") {
+        container.innerHTML = renderPipelineTab();
+      } else {
+        container.innerHTML = renderKpisTab();
+      }
+    }
+
+    function stageBadgeHtml(stage, assignedAgentId, reason) {
+      if (!assignedAgentId && stage === "new") {
+        return `<span class="stage-badge stage-incoming">📥 صندوق ليدات الأدمن</span>`;
+      }
+      const st = PIPELINE_STAGES.find(s => s.id === stage) || PIPELINE_STAGES[0];
+      let cls = "stage-badge";
+      if (stage === "closed_won") cls += " stage-won";
+      else if (stage === "closed_lost") cls += " stage-lost";
+      else if (stage === "meeting") cls += " stage-meeting";
+      const suffix = reason ? ` — ${escapeHtml(reason)}` : "";
+      return `<span class="${cls}">${escapeHtml(st.label)}${suffix}</span>`;
+    }
+
+    /* LEADS TAB */
+    function renderLeadsTab() {
+      const visible = getVisibleLeads();
+      const q = (state.searchQuery || "").trim().toLowerCase();
+      const searched = visible.filter(l => {
+        if (!q) return true;
+        return (
+          l.name.toLowerCase().includes(q) ||
+          l.phone.toLowerCase().includes(q) ||
+          l.source.toLowerCase().includes(q) ||
+          (l.campaign || "").toLowerCase().includes(q)
+        );
+      });
+
+      const incomingCount = searched.filter(l => !l.assignedAgentId).length;
+      const hotCount = searched.filter(l => l.interest === "hot").length;
+      const coldCount = searched.filter(l => l.interest === "cold").length;
+      const trashCount = searched.filter(l => l.interest === "trash").length;
+
+      const filtered = searched.filter(l => {
+        if (state.interestFilter === "all") return true;
+        if (state.interestFilter === "incoming") return !l.assignedAgentId;
+        return l.interest === state.interestFilter;
+      });
+
+      const adminRole = isAdmin();
+      const agents = getAgents();
+      const visibleSheets = getVisibleSheets();
+
+      const cardsHtml = filtered.length
+        ? filtered.map(lead => {
+            const lastFb = lead.feedbacks && lead.feedbacks.length ? lead.feedbacks[0] : null;
+            const tel = cleanPhone(lead.phone);
+            const wa = waLink(lead.phone);
+
+            const agentOptionsHtml = `
+              <option value="">— صندوق ليدات الأدمن (غير موزّع) —</option>
+              ${agents.map(ag => `
+                <option value="${escapeHtml(ag.id)}" ${lead.assignedAgentId === ag.id ? "selected" : ""}>
+                  ${escapeHtml(ag.name)}
+                </option>
+              `).join("")}
+            `;
+
+            return `
+              <div class="lead-card">
+                <div class="lead-top">
+                  <div>
+                    <h3 class="lead-name">${escapeHtml(lead.name)}</h3>
+                    <div class="lead-meta">
+                      ${escapeHtml(lead.source)}${lead.campaign ? ` • ${escapeHtml(lead.campaign)}` : ""}
+                      • وحدة ~${escapeHtml(lead.unitValueMillions || 6)} مليون
+                      ${adminRole ? ` • تكلفة الليد: <strong>${escapeHtml(lead.cost || 0)} ج.م</strong>` : ""}
+                    </div>
+                    <div class="lead-meta" style="margin-top:2px; font-weight:700; color:var(--navy-soft);">
+                      المسؤول: ${escapeHtml(getAgentName(lead.assignedAgentId))}
+                    </div>
+                  </div>
+                  ${stageBadgeHtml(lead.stage, lead.assignedAgentId, lead.outcomeReason)}
+                </div>
+
+                ${
+                  adminRole
+                    ? `<div class="assign-box">
+                         <span style="font-size:11.5px; font-weight:800; color:#92400E;">📤 توزيع الليد على إيجنت:</span>
+                         <select onchange="assignLeadToAgent('${lead.id}', this.value)">
+                           ${agentOptionsHtml}
+                         </select>
+                       </div>`
+                    : ""
+                }
+
+                <div class="contact-row">
+                  <span class="phone-text">${escapeHtml(lead.phone)}</span>
+                  <div class="action-icons">
+                    <a class="icon-call" href="tel:${escapeHtml(tel)}">📞 اتصال</a>
+                    <a class="icon-wa" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">💬 واتساب</a>
+                  </div>
+                </div>
+
+                <div class="status-row">
+                  <div class="status-btns">
+                    <button type="button" class="st-btn ${lead.interest === "hot" ? "active-hot" : ""}" onclick="setLeadInterest('${lead.id}', 'hot')">🔥 مهتم</button>
+                    <button type="button" class="st-btn ${lead.interest === "cold" ? "active-cold" : ""}" onclick="setLeadInterest('${lead.id}', 'cold')">⏸️ غير مهتم</button>
+                    <button type="button" class="st-btn ${lead.interest === "trash" ? "active-trash" : ""}" onclick="setLeadInterest('${lead.id}', 'trash')">🗑️ تراشت</button>
+                  </div>
+                  <div style="font-size:11px; color:var(--muted);">
+                    ${lead.followupDate ? `📅 متابعة: ${escapeHtml(lead.followupDate)}` : "بدون موعد متابعة"}
+                  </div>
+                </div>
+
+                <div class="feedback-preview">
+                  <div>
+                    ${lastFb
+                      ? `<strong>[${escapeHtml(lastFb.tag)}]</strong> ${escapeHtml(lastFb.note)}`
+                      : "لا يوجد فيدباك مسجل بعد"}
+                  </div>
+                  <button type="button" class="link-btn" onclick="openLeadDetailsModal('${lead.id}')">فيدباك / تفاصيل</button>
+                </div>
+              </div>
+            `;
+          }).join("")
+        : `<div class="empty-state">لا توجد ليدات مطابقة للفلتر أو البحث الحالي.</div>`;
+
+      return `
+        <input
+          type="text"
+          class="search-box"
+          placeholder="ابحث بالاسم، رقم الهاتف، المصدر، أو الحملة..."
+          value="${escapeHtml(state.searchQuery)}"
+          oninput="state.searchQuery = this.value; saveState(); renderMain();"
+        />
+
+        <div class="filter-toolbar">
+          <button type="button" class="chip chip-sheet ${state.leadSheetsOpen ? "active" : ""}" onclick="toggleLeadSheets(true)">
+            📂 ${adminRole ? "شيتات الأدمن" : "شيتاتي الخاصة"} (${visibleSheets.length})
+          </button>
+          <button type="button" class="chip ${state.interestFilter === "all" ? "active" : ""}" onclick="setInterestFilter('all')">
+            الكل (${searched.length})
+          </button>
+          ${
+            adminRole
+              ? `<button type="button" class="chip ${state.interestFilter === "incoming" ? "active" : ""}" onclick="setInterestFilter('incoming')">
+                   📥 صندوق ليدات الأدمن (${incomingCount})
+                 </button>`
+              : ""
+          }
+          <button type="button" class="chip ${state.interestFilter === "hot" ? "active" : ""}" onclick="setInterestFilter('hot')">
+            🔥 مهتم (${hotCount})
+          </button>
+          <button type="button" class="chip ${state.interestFilter === "cold" ? "active" : ""}" onclick="setInterestFilter('cold')">
+            ⏸️ غير مهتم (${coldCount})
+          </button>
+          <button type="button" class="chip ${state.interestFilter === "trash" ? "active" : ""}" onclick="setInterestFilter('trash')">
+            🗑️ تراشت (${trashCount})
+          </button>
+        </div>
+
+        ${cardsHtml}
+      `;
+    }
+
+    function assignLeadToAgent(leadId, agentId) {
+      if (!isAdmin()) return;
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+      lead.assignedAgentId = agentId || null;
+      if (agentId && lead.stage === "new") {
+        lead.stage = "contacted";
+      } else if (!agentId) {
+        lead.stage = "new";
+      }
+      lead.feedbacks = lead.feedbacks || [];
+      lead.feedbacks.unshift({
+        id: "fb_asg_" + Date.now(),
+        tag: "توزيع الأدمن",
+        note: agentId ? `تم إرسال الليد إلى ${getAgentName(agentId)}.` : "تم إرجاع الليد إلى صندوق ليدات الأدمن.",
+        time: "الآن"
+      });
+      saveState();
+      updateFollowupBadge();
+      renderMain();
+    }
+
+    function setInterestFilter(val) {
+      state.interestFilter = val;
+      saveState();
+      renderMain();
+    }
+
+    function toggleLeadSheets(open) {
+      state.leadSheetsOpen = Boolean(open);
+      saveState();
+      renderMain();
+    }
+
+    /* LEAD SHEETS WORKSPACE (MOBILE EXCEL + GOOGLE SHEETS + STRICT PRIVACY) */
+    function renderLeadSheetsWorkspace() {
+      const adminRole = isAdmin();
+      const sheets = getVisibleSheets();
+
+      if (!sheets.some(s => s.id === state.selectedSheetId)) {
+        state.selectedSheetId = sheets[0] ? sheets[0].id : null;
+      }
+      const activeSheet = sheets.find(s => s.id === state.selectedSheetId) || null;
+      const maxDaily = Number(state.kpiTargets.dailyCallsTarget) || 250;
+
+      const totalSelectedToday = sheets.reduce(
+        (sum, s) => sum + s.rows.filter(r => r.selectedToday).length,
+        0
+      );
+
+      const sheetIconsHtml = sheets.map(s => `
+        <div class="sheet-file-card ${activeSheet && activeSheet.id === s.id ? "selected" : ""}" onclick="selectSheet('${s.id}')">
+          <div>
+            <div style="font-size:13px; font-weight:800;">
+              📄 ${escapeHtml(s.name)}
+              ${!adminRole && s.isPrivateToAgent ? `<span style="font-size:10.5px; color:var(--green);"> (خاص بك فقط)</span>` : ""}
+            </div>
+            <div style="font-size:11px; color:var(--muted);">
+              ${s.rows.length} رقم • مكالمات اليوم: ${s.rows.filter(r => r.selectedToday).length} • تم الاتصال: ${s.rows.filter(r => r.calledToday).length}
+            </div>
+          </div>
+          <span style="font-size:12px; font-weight:800; color:var(--blue);">فتح</span>
+        </div>
+      `).join("");
+
+      const todayCallQueue = [];
+      sheets.forEach(s => {
+        s.rows.forEach(r => {
+          if (r.selectedToday) {
+            todayCallQueue.push({ sheetId: s.id, sheetName: s.name, row: r });
+          }
+        });
+      });
+
+      const todayQueueHtml = todayCallQueue.length
+        ? todayCallQueue.map(item => `
+            <div class="sheet-row-item" style="margin-bottom:6px; padding:8px 10px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                <div>
+                  <div style="font-size:13px; font-weight:800;">
+                    ${escapeHtml(item.row.name)}
+                    <span class="phone-text">(${escapeHtml(item.row.phone)})</span>
+                  </div>
+                  <div style="font-size:11px; color:var(--muted);">${escapeHtml(item.row.feedback || "بانتظار المكالمة")}</div>
+                </div>
+                <button type="button" class="st-btn" style="background:${item.row.calledToday ? "#DCFCE7" : "#FFF7ED"}; color:${item.row.calledToday ? "#15803D" : "#C2410C"}; border-color:#FDBA74;" onclick="openCompleteSheetCallModal('${item.sheetId}', '${item.row.id}')">
+                  ✔️ ${item.row.calledToday ? "تم" : "تأكيد المكالمة"}
+                </button>
+              </div>
+            </div>
+          `).join("")
+        : `<div style="font-size:12px; color:var(--muted);">لم تحدد أرقامًا لمكالمات اليوم بعد. اضغط "+ مكالمات اليوم" على أي رقم.</div>`;
+
+      let rowsHtml = "";
+      if (activeSheet) {
+        rowsHtml = activeSheet.rows.map(row => {
+          const tel = cleanPhone(row.phone);
+          const wa = waLink(row.phone);
+          const stLabel = row.interest === "hot" ? "🔥 مهتم" : row.interest === "cold" ? "⏸️ غير مهتم" : "🗑️ تراشت";
+          return `
+            <div class="sheet-row-item">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+                <div>
+                  <div style="font-size:13.5px; font-weight:800;">
+                    ${escapeHtml(row.name)}
+                    <span style="font-size:11px; font-weight:700; color:var(--slate);">(${stLabel})</span>
+                  </div>
+                  <div class="phone-text" style="margin-top:2px;">${escapeHtml(row.phone)}</div>
+                </div>
+                <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
+                  <button type="button" class="st-btn ${row.selectedToday ? "active-hot" : ""}" onclick="toggleSelectRowToday('${activeSheet.id}', '${row.id}')">
+                    ${row.selectedToday ? "📌 محدد لليوم" : "+ مكالمات اليوم"}
+                  </button>
+                  <button type="button" class="st-btn" style="background:${row.calledToday ? "#DCFCE7" : "#EFF6FF"}; color:${row.calledToday ? "#15803D" : "#1D4ED8"}; border-color:#93C5FD;" onclick="openCompleteSheetCallModal('${activeSheet.id}', '${row.id}')">
+                    ✔️ ${row.calledToday ? "تم الاتصال" : "تمت المكالمة"}
+                  </button>
+                </div>
+              </div>
+
+              <div style="margin-top:7px; font-size:12px; color:var(--navy-soft); background:#F8FAFC; padding:6px 8px; border-radius:8px; display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                <span><strong>فيدباك:</strong> ${escapeHtml(row.feedback || "لا يوجد فيدباك")}</span>
+                <button type="button" class="link-btn" onclick="openEditSheetRowModal('${activeSheet.id}', '${row.id}')">✏️ تعديل</button>
+              </div>
+
+              <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap;">
+                <div class="action-icons">
+                  <a class="icon-call" href="tel:${escapeHtml(tel)}">📞 اتصال</a>
+                  <a class="icon-wa" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">💬 واتساب</a>
+                </div>
+                ${
+                  row.promotedLeadId
+                    ? `<span style="font-size:11px; font-weight:700; color:var(--green);">✓ مضاف لليدز</span>`
+                    : `<button type="button" class="btn-soft" style="padding:5px 9px; font-size:11px;" onclick="promoteSheetRowToLead('${activeSheet.id}', '${row.id}')">
+                         ${adminRole ? "⬇️ إرسال لصندوق الأدمن" : "⬇️ إضافة لليداتي"}
+                       </button>`
+                }
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      return `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px;">
+          <button type="button" class="btn-soft" onclick="toggleLeadSheets(false)">⬅️ رجوع لقائمة الليدز</button>
+          <button type="button" class="btn-navy" onclick="openImportSheetModal()">📥 سحب شيت / إكسيل / جوجل شيت</button>
+        </div>
+
+        <div class="card-box">
+          <h2 class="card-title">
+            📂 ${adminRole ? "شيتات الأدمن" : "شيتاتي الخاصة (غير مرئية للأدمن)"}
+          </h2>
+          <div style="font-size:11.5px; color:var(--muted); margin-bottom:8px;">
+            ${
+              adminRole
+                ? "أي شيت يضيفه الإيجنت يبقى خاصًا به ولا يظهر هنا ولا يمكن للأدمن تعديله."
+                : "هذه الشيتات خاصة بحسابك فقط؛ الأدمن لا يراها ولا يستطيع تعديلها."
+            }
+            • أرقام اليوم المحددة: <strong>${totalSelectedToday} / ${maxDaily}</strong>
+          </div>
+          ${sheetIconsHtml || `<div class="empty-state">لا توجد ملفات في هذا القسم حاليًا.</div>`}
+        </div>
+
+        <div class="card-box">
+          <h2 class="card-title">📞 أرقام مكالمات اليوم المحددة (${todayCallQueue.length} / ${maxDaily})</h2>
+          ${todayQueueHtml}
+        </div>
+
+        ${activeSheet ? `
+          <div class="card-box">
+            <h2 class="card-title">📋 محتوى الملف: ${escapeHtml(activeSheet.name)}</h2>
+            ${rowsHtml || `<div class="empty-state">هذا الملف فارغ.</div>`}
+          </div>
+        ` : ""}
+      `;
+    }
+
+    function selectSheet(sheetId) {
+      state.selectedSheetId = sheetId;
+      saveState();
+      renderMain();
+    }
+
+    function toggleSelectRowToday(sheetId, rowId) {
+      const sheet = getVisibleSheets().find(s => s.id === sheetId);
+      if (!sheet) return;
+      const row = sheet.rows.find(r => r.id === rowId);
+      if (!row) return;
+
+      const maxDaily = Number(state.kpiTargets.dailyCallsTarget) || 250;
+      const currentSelected = getVisibleSheets().reduce(
+        (sum, s) => sum + s.rows.filter(r => r.selectedToday).length,
+        0
+      );
+
+      if (!row.selectedToday && currentSelected >= maxDaily) {
+        openAlertModal(`لقد وصلت للحد اليومي المحدد (${maxDaily} رقم). يمكنك تعديله من تبويب الأداء والعمولة.`);
+        return;
+      }
+
+      row.selectedToday = !row.selectedToday;
+      saveState();
+      renderMain();
+    }
+
+    function openCompleteSheetCallModal(sheetId, rowId) {
+      const sheet = getVisibleSheets().find(s => s.id === sheetId);
+      if (!sheet) return;
+      const row = sheet.rows.find(r => r.id === rowId);
+      if (!row) return;
+
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">✔️ تأكيد المكالمة وتسجيل الفيدباك</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+        <p style="margin:0 0 10px; font-size:12.5px; color:var(--muted);">
+          العميل: <strong>${escapeHtml(row.name)}</strong> (${escapeHtml(row.phone)})
+        </p>
+        <form onsubmit="saveCompletedSheetCall(event, '${sheetId}', '${rowId}')">
+          <div class="field-group">
+            <label class="field-label">حالة العميل</label>
+            <select id="sheetCallInterest" class="field-select">
+              <option value="hot" ${row.interest === "hot" ? "selected" : ""}>🔥 مهتم</option>
+              <option value="cold" ${row.interest === "cold" ? "selected" : ""}>⏸️ غير مهتم</option>
+              <option value="trash" ${row.interest === "trash" ? "selected" : ""}>🗑️ تراشت ليد</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">فيدباك المكالمة</label>
+            <textarea id="sheetCallFeedback" class="field-textarea" required>${escapeHtml(row.feedback || "")}</textarea>
+          </div>
+          <button type="submit" class="btn-primary">تأكيد الاتصال (✔️) وحفظ الفيدباك</button>
+        </form>
+      `);
+    }
+
+    function saveCompletedSheetCall(e, sheetId, rowId) {
+      e.preventDefault();
+      const sheet = getVisibleSheets().find(s => s.id === sheetId);
+      if (!sheet) return;
+      const row = sheet.rows.find(r => r.id === rowId);
+      if (!row) return;
+
+      const firstTime = !row.calledToday;
+      row.calledToday = true;
+      row.interest = document.getElementById("sheetCallInterest").value;
+      row.feedback = document.getElementById("sheetCallFeedback").value.trim();
+
+      if (firstTime) {
+        state.kpiTargets.dailyCallsDone = Math.min(
+          Number(state.kpiTargets.dailyCallsTarget) || 250,
+          (Number(state.kpiTargets.dailyCallsDone) || 0) + 1
+        );
+      }
+
+      saveState();
+      closeModal();
+      renderMain();
+    }
+
+    function openEditSheetRowModal(sheetId, rowId) {
+      const sheet = getVisibleSheets().find(s => s.id === sheetId);
+      if (!sheet) return;
+      const row = sheet.rows.find(r => r.id === rowId);
+      if (!row) return;
+
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">✏️ تعديل بيانات وفيدباك السطر</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+        <form onsubmit="saveEditedSheetRow(event, '${sheetId}', '${rowId}')">
+          <div class="field-group">
+            <label class="field-label">الاسم</label>
+            <input id="editSheetRowName" class="field-input" value="${escapeHtml(row.name)}" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">رقم الهاتف</label>
+            <input id="editSheetRowPhone" class="field-input" value="${escapeHtml(row.phone)}" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">الحالة</label>
+            <select id="editSheetRowInterest" class="field-select">
+              <option value="hot" ${row.interest === "hot" ? "selected" : ""}>🔥 مهتم</option>
+              <option value="cold" ${row.interest === "cold" ? "selected" : ""}>⏸️ غير مهتم</option>
+              <option value="trash" ${row.interest === "trash" ? "selected" : ""}>🗑️ تراشت ليد</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">الفيدباك</label>
+            <textarea id="editSheetRowFeedback" class="field-textarea">${escapeHtml(row.feedback || "")}</textarea>
+          </div>
+          <button type="submit" class="btn-primary">حفظ التعديلات</button>
+        </form>
+      `);
+    }
+
+    function saveEditedSheetRow(e, sheetId, rowId) {
+      e.preventDefault();
+      const sheet = getVisibleSheets().find(s => s.id === sheetId);
+      if (!sheet) return;
+      const row = sheet.rows.find(r => r.id === rowId);
+      if (!row) return;
+
+      row.name = document.getElementById("editSheetRowName").value.trim();
+      row.phone = document.getElementById("editSheetRowPhone").value.trim();
+      row.interest = document.getElementById("editSheetRowInterest").value;
+      row.feedback = document.getElementById("editSheetRowFeedback").value.trim();
+
+      saveState();
+      closeModal();
+      renderMain();
+    }
+
+    function promoteSheetRowToLead(sheetId, rowId) {
+      const sheet = getVisibleSheets().find(s => s.id === sheetId);
+      if (!sheet) return;
+      const row = sheet.rows.find(r => r.id === rowId);
+      if (!row || row.promotedLeadId) return;
+
+      const adminRole = isAdmin();
+      const newLeadId = "L_" + Date.now();
+      const newLead = {
+        id: newLeadId,
+        name: row.name,
+        phone: row.phone,
+        source: "إعلان فيسبوك",
+        campaign: sheet.name,
+        cost: 300,
+        unitValueMillions: 6,
+        interest: row.interest || "hot",
+        stage: "new",
+        // Admin promoted rows arrive in صندوق ليدات الأدمن; Agent rows go to that Agent
+        assignedAgentId: adminRole ? null : state.currentUser.id,
+        outcomeReason: "",
+        followupDate: new Date().toISOString().slice(0, 10),
+        feedbacks: row.feedback
+          ? [{ id: "fb_" + Date.now(), tag: "فيدباك شيت", note: row.feedback, time: "الآن" }]
+          : []
+      };
+      state.leads.unshift(newLead);
+      row.promotedLeadId = newLeadId;
+      saveState();
+      updateFollowupBadge();
+      renderMain();
+    }
+
+    /* MOBILE EXCEL (.xlsx, .xls, .csv, .ods, .tsv, .txt) + GOOGLE SHEETS URL IMPORT */
+    function openImportSheetModal() {
+      const adminRole = isAdmin();
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">📥 سحب ملف إكسيل أو جوجل شيت</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+
+        <div id="importSheetError" class="inline-msg"></div>
+        <div id="importSheetStatus" class="inline-ok"></div>
+
+        <p style="margin:0 0 10px; font-size:12px; color:var(--muted);">
+          ${
+            adminRole
+              ? "ملفات الأدمن تظهر في قسم شيتات الأدمن لتوزيع الليدات منها."
+              : "هذا الملف سيكون خاصًا بحسابك فقط وغير مرئي أو قابل للتعديل من قِبل الأدمن."
+          }
+        </p>
+
+        <form onsubmit="handleImportSheetSubmit(event)">
+          <div class="field-group">
+            <label class="field-label">اسم الشيت / الملف</label>
+            <input id="importSheetName" class="field-input" placeholder="مثال: ليدز الساحل الشمالي.xlsx" required />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">اختر ملف من الهاتف أو الجهاز (xlsx, xls, csv, ods, tsv, txt)</label>
+            <label for="importFileInput" class="upload-drop-label">
+              📱 اضغط هنا لاختيار ملف الإكسيل أو الجدول من الهاتف
+            </label>
+            <input
+              id="importFileInput"
+              type="file"
+              accept=".xlsx,.xls,.csv,.ods,.tsv,.txt,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv,text/tab-separated-values,text/plain,*/*"
+              style="width:100%; font-size:12px;"
+              onchange="handleMobileSpreadsheetFile(event)"
+            />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">أو اسحب من رابط Google Sheets (CSV / رابط شيت عام)</label>
+            <div style="display:flex; gap:6px;">
+              <input id="googleSheetUrlInput" type="url" class="field-input" placeholder="https://docs.google.com/spreadsheets/d/..." />
+              <button type="button" class="btn-navy" style="white-space:nowrap;" onclick="fetchGoogleSheetData()">سحب الشيت</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">البيانات المستخرجة / الملصقة (الاسم، الرقم، الفيدباك في كل سطر)</label>
+            <textarea id="importRawRows" class="field-textarea" placeholder="مثال:&#10;أ. حسام الدين، 01011223344، مهتم بشاليه في سيدي عبدالرحمن&#10;م. دينا سالم، 01288776655، تطلب تفاصيل الأسعار"></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary">حفظ الشيت وإضافته</button>
+        </form>
+      `);
+    }
+
+    function setImportMessage(type, msg) {
+      const errEl = document.getElementById("importSheetError");
+      const okEl = document.getElementById("importSheetStatus");
+      if (errEl) errEl.style.display = "none";
+      if (okEl) okEl.style.display = "none";
+      if (type === "error" && errEl) {
+        errEl.textContent = msg;
+        errEl.style.display = "block";
+      } else if (type === "ok" && okEl) {
+        okEl.textContent = msg;
+        okEl.style.display = "block";
+      }
+    }
+
+    function rowsArrayToLines(matrix) {
+      return matrix
+        .map(row => (Array.isArray(row) ? row : [row]))
+        .map(cells => cells.map(c => String(c ?? "").trim()).filter(Boolean))
+        .filter(cells => cells.length > 0)
+        .map(cells => cells.join("، "))
+        .join("\n");
+    }
+
+    // Built-in offline fallback parser for CSV / TSV / delimited text when SheetJS is unavailable
+    function parseDelimitedFallback(text) {
+      const lines = String(text || "")
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(Boolean);
+      if (!lines.length) return "";
+      const delimiter = lines[0].includes("\t")
+        ? "\t"
+        : lines[0].includes(";")
+          ? ";"
+          : ",";
+      const rows = lines.map(line =>
+        line
+          .split(delimiter)
+          .map(cell => cell.replace(/^["']|["']$/g, "").trim())
+          .filter(Boolean)
+      );
+      return rowsArrayToLines(rows);
+    }
+
+    function handleMobileSpreadsheetFile(e) {
+      const file = e.target && e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const nameInput = document.getElementById("importSheetName");
+      if (nameInput && !nameInput.value.trim()) {
+        nameInput.value = file.name;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const data = ev.target.result;
+          if (typeof XLSX !== "undefined") {
+            const workbook = XLSX.read(data, { type: "array" });
+            const firstSheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[firstSheetName];
+            const matrix = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+            const textLines = rowsArrayToLines(matrix);
+            const area = document.getElementById("importRawRows");
+            if (area) area.value = textLines;
+            setImportMessage("ok", `تم قراءة الملف "${file.name}" بنجاح (${matrix.length} صف).`);
+          } else {
+            const decoder = new TextDecoder("utf-8");
+            const text = decoder.decode(data);
+            const area = document.getElementById("importRawRows");
+            if (area) area.value = parseDelimitedFallback(text);
+            setImportMessage("ok", `تم تحميل محتوى الملف "${file.name}" عبر المحلل المدمج.`);
+          }
+        } catch (err) {
+          try {
+            const fallbackDecoder = new TextDecoder("utf-8");
+            const rawText = fallbackDecoder.decode(ev.target.result);
+            const fallbackLines = parseDelimitedFallback(rawText);
+            if (fallbackLines) {
+              const area = document.getElementById("importRawRows");
+              if (area) area.value = fallbackLines;
+              setImportMessage("ok", `تم استخراج البيانات من "${file.name}" بنجاح.`);
+              return;
+            }
+          } catch (_) {
+            // Ignore secondary fallback decode errors
+          }
+          setImportMessage("error", "تعذر قراءة الملف. تأكد أن الملف جدول بيانات صالح أو الصق الصفوف يدويًا.");
+        }
+      };
+      reader.onerror = function() {
+        setImportMessage("error", "حدث خطأ أثناء فتح الملف من الهاتف.");
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function buildGoogleCsvExportUrl(rawUrl) {
+      const trimmed = String(rawUrl || "").trim();
+      if (!trimmed) return "";
+      if (trimmed.includes("export?format=csv") || trimmed.includes("tqx=out:csv")) {
+        return trimmed;
+      }
+      const match = trimmed.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (match && match[1]) {
+        const gidMatch = trimmed.match(/[?#&]gid=(\d+)/);
+        const gid = gidMatch ? gidMatch[1] : "0";
+        return `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv&gid=${gid}`;
+      }
+      return trimmed;
+    }
+
+    async function fetchGoogleSheetData() {
+      const urlInput = document.getElementById("googleSheetUrlInput");
+      const rawUrl = urlInput ? urlInput.value.trim() : "";
+      if (!rawUrl) {
+        setImportMessage("error", "يرجى إدخال رابط Google Sheets أولًا.");
+        return;
+      }
+
+      const exportUrl = buildGoogleCsvExportUrl(rawUrl);
+      setImportMessage("ok", "جاري سحب البيانات من Google Sheets...");
+
+      try {
+        const res = await fetch(exportUrl);
+        if (!res.ok) {
+          throw new Error("HTTP_" + res.status);
+        }
+        const csvText = await res.text();
+        let formatted = csvText.trim();
+
+        if (typeof XLSX !== "undefined") {
+          const wb = XLSX.read(csvText, { type: "string" });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          const matrix = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
+          formatted = rowsArrayToLines(matrix);
+        } else {
+          formatted = parseDelimitedFallback(csvText);
+        }
+
+        const area = document.getElementById("importRawRows");
+        if (area) area.value = formatted;
+
+        const nameInput = document.getElementById("importSheetName");
+        if (nameInput && !nameInput.value.trim()) {
+          nameInput.value = "Google Sheet - مستورد.csv";
+        }
+
+        setImportMessage("ok", "تم سحب بيانات جوجل شيت بنجاح. راجعها ثم اضغط حفظ الشيت.");
+      } catch (err) {
+        setImportMessage(
+          "error",
+          "تعذر السحب المباشر (تأكد أن مشاركة الشيت مضبوطة على Any one with the link أو أن الشبكة متاحة، ويمكنك لصق الصفوف يدويًا)."
+        );
+      }
+    }
+
+    function handleImportSheetSubmit(e) {
+      e.preventDefault();
+      const sheetName = document.getElementById("importSheetName").value.trim() || "شيت ليدز";
+      const raw = document.getElementById("importRawRows").value.trim();
+
+      const lines = raw
+        ? raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
+        : ["عميل جديد، 01000000001، مهتم بالاستفسار"];
+
+      const rows = lines.map((line, idx) => {
+        const parts = line.split(/[,،|\t;]+/).map(p => p.trim()).filter(Boolean);
+        const name = parts[0] || `عميل ${idx + 1}`;
+        const phone = parts[1] || "01000000000";
+        const feedback = parts.slice(2).join(" - ") || "مسجل من الشيت";
+        return {
+          id: "sr_" + Date.now() + "_" + idx,
+          name,
+          phone,
+          interest: "hot",
+          feedback,
+          selectedToday: idx < 5,
+          calledToday: false,
+          promotedLeadId: null
+        };
+      });
+
+      const adminRole = isAdmin();
+      const newSheet = {
+        id: "sheet_" + Date.now(),
+        name: sheetName,
+        ownerId: state.currentUser.id,
+        isPrivateToAgent: !adminRole,
+        uploadedAt: new Date().toISOString().slice(0, 10),
+        rows
+      };
+
+      state.leadSheets.unshift(newSheet);
+      state.selectedSheetId = newSheet.id;
+      saveState();
+      closeModal();
+      renderMain();
+    }
+
+    /* ADD LEAD (INCOMING LEADS GO TO ADMIN FIRST FOR DISTRIBUTION) */
+    function openAddLeadModal() {
+      const adminRole = isAdmin();
+      const agents = getAgents();
+
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">+ إضافة عميل محتمل (Lead)</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+        <form onsubmit="handleAddLeadSubmit(event)">
+          <div class="field-group">
+            <label class="field-label">اسم العميل *</label>
+            <input id="newLeadName" class="field-input" placeholder="مثال: م. كريم محمود" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">رقم الهاتف *</label>
+            <input id="newLeadPhone" class="field-input" placeholder="010xxxxxxxx" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">مصدر الليد</label>
+            <select id="newLeadSource" class="field-select">
+              ${LEAD_SOURCES.map(src => `<option value="${escapeHtml(src)}">${escapeHtml(src)}</option>`).join("")}
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">اسم الحملة / المشروع</label>
+            <input id="newLeadCampaign" class="field-input" placeholder="مثال: الساحل الشمالي / اليكس ويست" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">قيمة الوحدة المتوقعة (مليون جنيه)</label>
+            <input id="newLeadUnit" type="number" step="0.5" min="0.5" class="field-input" value="6" />
+          </div>
+          ${
+            adminRole
+              ? `<div class="field-group">
+                   <label class="field-label">توزيع على إيجنت (أو يظل في صندوق ليدات الأدمن)</label>
+                   <select id="newLeadAssignAgent" class="field-select">
+                     <option value="">صندوق ليدات الأدمن (توزيع لاحقًا)</option>
+                     ${agents.map(ag => `<option value="${escapeHtml(ag.id)}">${escapeHtml(ag.name)}</option>`).join("")}
+                   </select>
+                 </div>
+                 <div class="field-group">
+                   <label class="field-label">تكلفة الليد (جنيه - للأدمن فقط)</label>
+                   <input id="newLeadCost" type="number" min="0" class="field-input" value="300" />
+                 </div>`
+              : `<input id="newLeadCost" type="hidden" value="300" />`
+          }
+          <div class="field-group">
+            <label class="field-label">موعد المتابعة القادمة</label>
+            <input id="newLeadFollowup" type="date" class="field-input" value="${new Date().toISOString().slice(0, 10)}" />
+          </div>
+          <button type="submit" class="btn-primary">حفظ العميل</button>
+        </form>
+      `);
+    }
+
+    function handleAddLeadSubmit(e) {
+      e.preventDefault();
+      const adminRole = isAdmin();
+      const name = document.getElementById("newLeadName").value.trim();
+      const phone = document.getElementById("newLeadPhone").value.trim();
+      const source = document.getElementById("newLeadSource").value;
+      const campaign = document.getElementById("newLeadCampaign").value.trim();
+      const unitValueMillions = Number(document.getElementById("newLeadUnit").value) || 6;
+      const cost = Number(document.getElementById("newLeadCost").value) || 0;
+      const followupDate = document.getElementById("newLeadFollowup").value || "";
+
+      // Incoming company leads go to Admin first (assignedAgentId = null) unless Admin assigns right away.
+      // If added by an Agent directly, it is assigned to that Agent.
+      let assignedAgentId = state.currentUser.id;
+      if (adminRole) {
+        const chosen = document.getElementById("newLeadAssignAgent")?.value || "";
+        assignedAgentId = chosen || null;
+      }
+
+      state.leads.unshift({
+        id: "L_" + Date.now(),
+        name,
+        phone,
+        source,
+        campaign,
+        cost,
+        unitValueMillions,
+        interest: "hot",
+        stage: assignedAgentId ? "contacted" : "new",
+        assignedAgentId,
+        outcomeReason: "",
+        followupDate,
+        feedbacks: [
+          {
+            id: "fb_" + Date.now(),
+            tag: "مهتم جاد",
+            note: assignedAgentId ? "تم تسجيل العميل." : "ليد وارد في صندوق ليدات الأدمن بانتظار التوزيع.",
+            time: "الآن"
+          }
+        ]
+      });
+
+      saveState();
+      updateFollowupBadge();
+      closeModal();
+      renderMain();
+    }
+
+    function setLeadInterest(leadId, status) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+      lead.interest = status;
+      saveState();
+      updateFollowupBadge();
+      renderMain();
+    }
+
+    /* LEAD DETAILS & EDITABLE FEEDBACK */
+    function openLeadDetailsModal(leadId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const tel = cleanPhone(lead.phone);
+      const wa = waLink(lead.phone);
+
+      const stageOptions = PIPELINE_STAGES.map(st => `
+        <option value="${st.id}" ${lead.stage === st.id ? "selected" : ""}>${escapeHtml(st.label)}</option>
+      `).join("");
+
+      const tagsHtml = FEEDBACK_TAGS.map((t, idx) => `
+        <button type="button" class="tag-pill ${idx === 0 ? "selected" : ""}" data-tag="${escapeHtml(t)}" onclick="pickFeedbackTag(this)">${escapeHtml(t)}</button>
+      `).join("");
+
+      const historyHtml = (lead.feedbacks || []).map(fb => `
+        <div class="feedback-item" id="fb_box_${fb.id}">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:4px;">
+            <span style="font-size:11.5px; font-weight:800; color:var(--orange);">
+              ${escapeHtml(fb.tag)} • <span style="color:var(--muted); font-weight:600;">${escapeHtml(fb.time)}</span>
+            </span>
+            <button type="button" class="link-btn" onclick="startEditFeedback('${lead.id}', '${fb.id}')">✏️ تعديل</button>
+          </div>
+          <div id="fb_note_${fb.id}" style="font-size:12.5px; color:var(--navy);">${escapeHtml(fb.note)}</div>
+        </div>
+      `).join("");
+
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">${escapeHtml(lead.name)}</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+
+        <div id="detailInlineError" class="inline-msg"></div>
+
+        <div class="contact-row" style="margin-bottom:10px;">
+          <span class="phone-text">${escapeHtml(lead.phone)}</span>
+          <div class="action-icons">
+            <a class="icon-call" href="tel:${escapeHtml(tel)}">📞 اتصال</a>
+            <a class="icon-wa" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">💬 واتساب</a>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">مرحلة العميل في البايب لاين</label>
+          <select id="detailStageSelect" class="field-select" onchange="onDetailStageChange(this.value)">
+            ${stageOptions}
+          </select>
+        </div>
+
+        <div id="detailOutcomeReasonBox" class="field-group" style="display:${lead.stage === "closed_won" || lead.stage === "closed_lost" ? "block" : "none"};">
+          <label class="field-label">سبب نجاح أو فشل الصفقة (إلزامي عند الإغلاق)</label>
+          <input id="detailOutcomeReason" class="field-input" value="${escapeHtml(lead.outcomeReason || "")}" placeholder="مثال: تم التعاقد / الميزانية أقل / تأجيل القرار" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">موعد المتابعة القادمة</label>
+          <input id="detailFollowupDate" type="date" class="field-input" value="${escapeHtml(lead.followupDate || "")}" />
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">+ إضافة فيدباك جديد</label>
+          <div class="tag-list" id="detailTagList">${tagsHtml}</div>
+          <textarea id="detailNewFeedbackNote" class="field-textarea" placeholder="اكتب ملخص المكالمة أو تفاصيل العميل..."></textarea>
+        </div>
+
+        <button type="button" class="btn-primary" style="margin-bottom:14px;" onclick="saveLeadDetails('${lead.id}')">حفظ التحديثات والفيدباك</button>
+
+        <h4 style="margin:0 0 8px; font-size:13.5px; font-weight:800;">السجل الزمني للفيدباك (${(lead.feedbacks || []).length})</h4>
+        ${historyHtml || `<div style="font-size:12px; color:var(--muted);">لا توجد ملاحظات سابقة.</div>`}
+      `);
+    }
+
+    function onDetailStageChange(newStage) {
+      const box = document.getElementById("detailOutcomeReasonBox");
+      if (box) {
+        box.style.display = (newStage === "closed_won" || newStage === "closed_lost") ? "block" : "none";
+      }
+    }
+
+    function pickFeedbackTag(btn) {
+      document.querySelectorAll("#detailTagList .tag-pill").forEach(p => p.classList.remove("selected"));
+      btn.classList.add("selected");
+    }
+
+    function saveLeadDetails(leadId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const errEl = document.getElementById("detailInlineError");
+      errEl.style.display = "none";
+
+      const stage = document.getElementById("detailStageSelect").value;
+      const reasonInput = document.getElementById("detailOutcomeReason");
+      const reason = reasonInput ? reasonInput.value.trim() : "";
+
+      if ((stage === "closed_won" || stage === "closed_lost") && !reason) {
+        errEl.textContent = "يرجى كتابة سبب نجاح الصفقة أو فشلها قبل الحفظ.";
+        errEl.style.display = "block";
+        return;
+      }
+
+      lead.stage = stage;
+      lead.outcomeReason = (stage === "closed_won" || stage === "closed_lost") ? reason : "";
+      lead.followupDate = document.getElementById("detailFollowupDate").value || "";
+
+      const selectedTagEl = document.querySelector("#detailTagList .tag-pill.selected");
+      const tag = selectedTagEl ? selectedTagEl.getAttribute("data-tag") : "ملاحظة";
+      const note = document.getElementById("detailNewFeedbackNote").value.trim();
+
+      if (note) {
+        lead.feedbacks = lead.feedbacks || [];
+        lead.feedbacks.unshift({
+          id: "fb_" + Date.now(),
+          tag,
+          note,
+          time: "الآن"
+        });
+      }
+
+      saveState();
+      updateFollowupBadge();
+      closeModal();
+      renderMain();
+    }
+
+    function startEditFeedback(leadId, fbId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+      const fb = (lead.feedbacks || []).find(f => f.id === fbId);
+      if (!fb) return;
+
+      const noteEl = document.getElementById("fb_note_" + fbId);
+      if (!noteEl) return;
+
+      noteEl.innerHTML = `
+        <input id="edit_fb_input_${fbId}" class="field-input" style="margin-bottom:6px; padding:7px 9px;" value="${escapeHtml(fb.note)}" />
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="btn-navy" style="padding:5px 10px; font-size:11px;" onclick="commitEditFeedback('${leadId}', '${fbId}')">حفظ التعديل</button>
+          <button type="button" class="btn-soft" style="padding:5px 10px; font-size:11px;" onclick="openLeadDetailsModal('${leadId}')">إلغاء</button>
+        </div>
+      `;
+    }
+
+    function commitEditFeedback(leadId, fbId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+      const fb = (lead.feedbacks || []).find(f => f.id === fbId);
+      if (!fb) return;
+      const inp = document.getElementById("edit_fb_input_" + fbId);
+      if (!inp) return;
+      const updated = inp.value.trim();
+      if (!updated) return;
+      fb.note = updated;
+      fb.time = fb.time + " (معدّل)";
+      saveState();
+      openLeadDetailsModal(leadId);
+      renderMain();
+    }
+
+    /* FOLLOWUPS TAB */
+    function renderFollowupsTab() {
+      const today = new Date().toISOString().slice(0, 10);
+      const items = getVisibleLeads().filter(l =>
+        l.interest !== "trash" &&
+        l.stage !== "closed_won" &&
+        l.stage !== "closed_lost" &&
+        l.followupDate
+      ).sort((a, b) => a.followupDate.localeCompare(b.followupDate));
+
+      if (!items.length) {
+        return `<div class="empty-state">لا توجد متابعات مجدولة حاليًا.</div>`;
+      }
+
+      return items.map(lead => {
+        const isOverdue = lead.followupDate < today;
+        const isToday = lead.followupDate === today;
+        const badgeText = isOverdue ? "متأخرة" : isToday ? "اليوم" : "قادمة";
+        const tel = cleanPhone(lead.phone);
+        const wa = waLink(lead.phone);
+        return `
+          <div class="lead-card">
+            <div class="lead-top">
+              <div>
+                <h3 class="lead-name">${escapeHtml(lead.name)}</h3>
+                <div class="lead-meta">📅 ${escapeHtml(lead.followupDate)} • ${escapeHtml(getAgentName(lead.assignedAgentId))}</div>
+              </div>
+              <span class="stage-badge ${isOverdue ? "stage-lost" : isToday ? "stage-won" : ""}">${badgeText}</span>
+            </div>
+            <div class="contact-row">
+              <span class="phone-text">${escapeHtml(lead.phone)}</span>
+              <div class="action-icons">
+                <a class="icon-call" href="tel:${escapeHtml(tel)}">📞 اتصال</a>
+                <a class="icon-wa" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">💬 واتساب</a>
+                <button type="button" class="link-btn" onclick="openLeadDetailsModal('${lead.id}')">تحديث</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* PIPELINE TAB */
+    function renderPipelineTab() {
+      const visible = getVisibleLeads().filter(l => l.interest !== "trash");
+      const totalActive = visible.length || 1;
+      const meetingsCount = visible.filter(l => l.stage === "meeting" || l.stage === "closed_won" || l.stage === "closed_lost").length;
+      const wonLeads = visible.filter(l => l.stage === "closed_won");
+      const lostLeads = visible.filter(l => l.stage === "closed_lost");
+
+      const convToMeeting = ((meetingsCount / totalActive) * 100).toFixed(1);
+      const convClose = ((wonLeads.length / totalActive) * 100).toFixed(1);
+
+      const openPipelineValue = visible
+        .filter(l => l.stage !== "closed_won" && l.stage !== "closed_lost")
+        .reduce((sum, l) => sum + (Number(l.unitValueMillions) || 6), 0);
+
+      const wonValue = wonLeads.reduce((sum, l) => sum + (Number(l.unitValueMillions) || 6), 0);
+
+      const sectionsHtml = PIPELINE_STAGES.map(st => {
+        const group = visible.filter(l => l.stage === st.id);
+        const rows = group.length
+          ? group.map(lead => `
+              <div style="border:1px solid var(--border); border-radius:11px; padding:9px; margin-bottom:7px; background:#F8FAFC;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                  <div>
+                    <div style="font-size:13px; font-weight:800;">${escapeHtml(lead.name)}</div>
+                    <div style="font-size:11px; color:var(--muted);">
+                      وحدة ~${escapeHtml(lead.unitValueMillions || 6)} مليون • ${escapeHtml(getAgentName(lead.assignedAgentId))}
+                    </div>
+                    ${lead.outcomeReason ? `<div style="font-size:11px; font-weight:700; color:${st.id === "closed_won" ? "var(--green)" : "var(--red)"}; margin-top:3px;">السبب: ${escapeHtml(lead.outcomeReason)}</div>` : ""}
+                  </div>
+                  <button type="button" class="btn-soft" style="padding:5px 8px; font-size:11px;" onclick="openCloseDealModal('${lead.id}')">إغلاق / حالة</button>
+                </div>
+              </div>
+            `).join("")
+          : `<div style="font-size:11.5px; color:var(--muted);">لا توجد صفقات في هذه المرحلة.</div>`;
+
+        return `
+          <div class="card-box">
+            <h3 class="card-title">${escapeHtml(st.label)} (${group.length})</h3>
+            ${rows}
+          </div>
+        `;
+      }).join("");
+
+      return `
+        <div class="card-box">
+          <h2 class="card-title">📈 ملخص البايب لاين ومعدلات التحويل</h2>
+          <div class="metric-grid">
+            <div class="metric-tile">
+              <div class="metric-label">بايب لاين مفتوح</div>
+              <div class="metric-val">${openPipelineValue.toFixed(1)} م.ج</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-label">صفقات ناجحة (${wonLeads.length})</div>
+              <div class="metric-val" style="color:var(--green);">${wonValue.toFixed(1)} م.ج</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-label">تحول لميتينج</div>
+              <div class="metric-val">${convToMeeting}%</div>
+            </div>
+            <div class="metric-tile">
+              <div class="metric-label">معدل الإغلاق / غير ناجحة (${lostLeads.length})</div>
+              <div class="metric-val">${convClose}% / ${lostLeads.length}</div>
+            </div>
+          </div>
+        </div>
+
+        ${sectionsHtml}
+      `;
+    }
+
+    function openCloseDealModal(leadId) {
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">تحديث حالة الصفقة — ${escapeHtml(lead.name)}</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+        <div id="dealInlineError" class="inline-msg"></div>
+        <form onsubmit="saveDealOutcome(event, '${leadId}')">
+          <div class="field-group">
+            <label class="field-label">حالة الصفقة</label>
+            <select id="dealOutcomeStatus" class="field-select">
+              <option value="closed_won" ${lead.stage === "closed_won" ? "selected" : ""}>✅ صفقة ناجحة</option>
+              <option value="closed_lost" ${lead.stage === "closed_lost" ? "selected" : ""}>❌ صفقة غير ناجحة</option>
+              <option value="meeting" ${lead.stage === "meeting" ? "selected" : ""}>ميتينج / معاينة (مفتوحة)</option>
+              <option value="contacted" ${lead.stage === "contacted" ? "selected" : ""}>تم التواصل (مفتوحة)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">قيمة الوحدة (مليون جنيه)</label>
+            <input id="dealUnitMillions" type="number" step="0.5" min="0.5" class="field-input" value="${escapeHtml(lead.unitValueMillions || 6)}" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">سبب نجاح أو فشل الصفقة (إلزامي عند الإغلاق)</label>
+            <textarea id="dealOutcomeReasonInput" class="field-textarea" placeholder="مثال: تم التعاقد ودفع المقدم / أو: الميزانية أقل / تأجيل القرار">${escapeHtml(lead.outcomeReason || "")}</textarea>
+          </div>
+          <button type="submit" class="btn-primary">حفظ حالة الصفقة</button>
+        </form>
+      `);
+    }
+
+    function saveDealOutcome(e, leadId) {
+      e.preventDefault();
+      const lead = state.leads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      const errEl = document.getElementById("dealInlineError");
+      errEl.style.display = "none";
+
+      const status = document.getElementById("dealOutcomeStatus").value;
+      const unitVal = Number(document.getElementById("dealUnitMillions").value) || 6;
+      const reason = document.getElementById("dealOutcomeReasonInput").value.trim();
+
+      if ((status === "closed_won" || status === "closed_lost") && !reason) {
+        errEl.textContent = "يجب كتابة سبب نجاح الصفقة أو فشلها قبل الحفظ.";
+        errEl.style.display = "block";
+        return;
+      }
+
+      lead.stage = status;
+      lead.unitValueMillions = unitVal;
+      lead.outcomeReason = (status === "closed_won" || status === "closed_lost") ? reason : "";
+
+      if (status === "closed_won" || status === "closed_lost") {
+        lead.feedbacks = lead.feedbacks || [];
+        lead.feedbacks.unshift({
+          id: "fb_" + Date.now(),
+          tag: status === "closed_won" ? "صفقة ناجحة ✓" : "صفقة غير ناجحة ✕",
+          note: reason,
+          time: "الآن"
+        });
+      }
+
+      saveState();
+      closeModal();
+      renderMain();
+    }
+
+    /* KPIS, CAC (ADMIN ONLY), COMMISSION & TARGETS (UP TO 250 CALLS / 50 MEETINGS) */
+    function renderKpisTab() {
+      const adminRole = isAdmin();
+      const t = state.kpiTargets;
+      const callTarget = Number(t.dailyCallsTarget) || 250;
+      const meetTarget = Number(t.weeklyMeetingsTarget) || 50;
+      const callDone = Number(t.dailyCallsDone) || 0;
+      const meetDone = Number(t.weeklyMeetingsDone) || 0;
+
+      const callPct = Math.min(100, Math.round((callDone / Math.max(1, callTarget)) * 100));
+      const meetPct = Math.min(100, Math.round((meetDone / Math.max(1, meetTarget)) * 100));
+
+      const wonLeads = state.leads.filter(l => l.stage === "closed_won");
+      const wonCount = Math.max(1, wonLeads.length);
+      const totalCost = state.leads.filter(l => l.interest !== "trash").reduce((s, l) => s + (Number(l.cost) || 0), 0);
+      const cac = Math.round(totalCost / wonCount);
+
+      const sim = state.commissionSim;
+      const unitVal = Number(sim.unitMillions) || 6;
+      const isDirect = sim.mode === "direct";
+      const estCommission = isDirect
+        ? Math.round(unitVal * 1000000 * 0.012)
+        : Math.max(0, Math.round(unitVal * 1000000 * 0.006 - 15000));
+
+      return `
+        <div class="card-box">
+          <h2 class="card-title">🎯 مؤشرات الأداء اليومية والأسبوعية</h2>
+
+          <div style="margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:12.5px; font-weight:700;">
+              <span>📞 مكالمات اليوم: ${callDone} / ${callTarget} (${callPct}%)</span>
+              <div style="display:flex; gap:4px;">
+                <button type="button" class="st-btn" onclick="stepCalls(-1)">-</button>
+                <button type="button" class="st-btn" onclick="stepCalls(1)">+</button>
+                <button type="button" class="link-btn" onclick="openEditTargetsModal()">✏️ تعديل الهدف</button>
+              </div>
+            </div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:${callPct}%;"></div></div>
+          </div>
+
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:12.5px; font-weight:700;">
+              <span>🤝 ميتينجز الأسبوع: ${meetDone} / ${meetTarget} (${meetPct}%)</span>
+              <div style="display:flex; gap:4px;">
+                <button type="button" class="st-btn" onclick="stepMeetings(-1)">-</button>
+                <button type="button" class="st-btn" onclick="stepMeetings(1)">+</button>
+                <button type="button" class="link-btn" onclick="openEditTargetsModal()">✏️ تعديل الهدف</button>
+              </div>
+            </div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:${meetPct}%; background:var(--blue);"></div></div>
+          </div>
+        </div>
+
+        ${
+          adminRole
+            ? `<div class="card-box">
+                 <h2 class="card-title">👑 تكلفة الليد و CAC (ظاهر للأدمن فقط)</h2>
+                 <div class="metric-grid">
+                   <div class="metric-tile">
+                     <div class="metric-label">إجمالي تكلفة الليدات النشطة</div>
+                     <div class="metric-val">${totalCost.toLocaleString("ar-EG")} ج.م</div>
+                   </div>
+                   <div class="metric-tile">
+                     <div class="metric-label">تكلفة اكتساب العميل (CAC)</div>
+                     <div class="metric-val" style="color:var(--orange);">${cac.toLocaleString("ar-EG")} ج.م</div>
+                   </div>
+                 </div>
+               </div>`
+            : `<div class="card-box" style="background:#F8FAFC;">
+                 <div style="font-size:12.5px; font-weight:800; color:var(--slate);">🔒 تكلفة الليد وحسابات الـ CAC مخفية عن حساب الإيجنت</div>
+               </div>`
+        }
+
+        <div class="card-box">
+          <h2 class="card-title">💰 حاسبة العمولة العادلة (مباشر vs ليد شركة)</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;">
+            <button type="button" class="chip ${!isDirect ? "active" : ""}" style="text-align:center;" onclick="setCommissionMode('company')">ليد شركة (إعلانات)</button>
+            <button type="button" class="chip ${isDirect ? "active" : ""}" style="text-align:center;" onclick="setCommissionMode('direct')">دايركت / علاقات شخصية</button>
+          </div>
+          <div class="field-group">
+            <label class="field-label">قيمة الوحدة (مليون جنيه)</label>
+            <input type="number" step="0.5" min="0.5" class="field-input" value="${escapeHtml(unitVal)}" onchange="updateSimUnit(this.value)" />
+          </div>
+          <div class="metric-tile" style="background:var(--green-soft); border-color:#BBF7D0;">
+            <div class="metric-label">صافي العمولة التقديرية (${isDirect ? "دايركت/علاقات" : "ليد شركة بعد تكلفة التشغيل"})</div>
+            <div class="metric-val" style="color:var(--green);">${estCommission.toLocaleString("ar-EG")} ج.م</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function stepCalls(delta) {
+      const maxVal = Number(state.kpiTargets.dailyCallsTarget) || 250;
+      state.kpiTargets.dailyCallsDone = Math.max(0, Math.min(maxVal, (Number(state.kpiTargets.dailyCallsDone) || 0) + delta));
+      saveState();
+      renderMain();
+    }
+
+    function stepMeetings(delta) {
+      const maxVal = Number(state.kpiTargets.weeklyMeetingsTarget) || 50;
+      state.kpiTargets.weeklyMeetingsDone = Math.max(0, Math.min(maxVal, (Number(state.kpiTargets.weeklyMeetingsDone) || 0) + delta));
+      saveState();
+      renderMain();
+    }
+
+    function openEditTargetsModal() {
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">تعديل أهداف المكالمات والميتينجز</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+        <form onsubmit="saveTargets(event)">
+          <div class="field-group">
+            <label class="field-label">هدف المكالمات اليومية (حد أقصى 250)</label>
+            <input id="targetCallsInput" type="number" min="1" max="250" class="field-input" value="${escapeHtml(state.kpiTargets.dailyCallsTarget)}" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label">هدف الميتينجز الأسبوعية (حد أقصى 50)</label>
+            <input id="targetMeetingsInput" type="number" min="1" max="50" class="field-input" value="${escapeHtml(state.kpiTargets.weeklyMeetingsTarget)}" required />
+          </div>
+          <button type="submit" class="btn-primary">حفظ الأهداف</button>
+        </form>
+      `);
+    }
+
+    function saveTargets(e) {
+      e.preventDefault();
+      const c = Math.max(1, Math.min(250, Number(document.getElementById("targetCallsInput").value) || 250));
+      const m = Math.max(1, Math.min(50, Number(document.getElementById("targetMeetingsInput").value) || 50));
+      state.kpiTargets.dailyCallsTarget = c;
+      state.kpiTargets.weeklyMeetingsTarget = m;
+      state.kpiTargets.dailyCallsDone = Math.min(state.kpiTargets.dailyCallsDone, c);
+      state.kpiTargets.weeklyMeetingsDone = Math.min(state.kpiTargets.weeklyMeetingsDone, m);
+      saveState();
+      closeModal();
+      renderMain();
+    }
+
+    function setCommissionMode(mode) {
+      state.commissionSim.mode = mode;
+      saveState();
+      renderMain();
+    }
+
+    function updateSimUnit(val) {
+      state.commissionSim.unitMillions = Math.max(0.5, Number(val) || 6);
+      saveState();
+      renderMain();
+    }
+
+    /* MODAL & NOTICE HELPERS */
+    function openModal(html) {
+      document.getElementById("modalSheet").innerHTML = html;
+      document.getElementById("modalBackdrop").classList.add("open");
+    }
+
+    function openAlertModal(message) {
+      openModal(`
+        <div class="modal-head">
+          <h3 class="modal-title">تنبيه</h3>
+          <button type="button" class="close-x" onclick="closeModal()">✕</button>
+        </div>
+        <p style="margin:0 0 14px; font-size:13px; color:var(--navy-soft);">${escapeHtml(message)}</p>
+        <button type="button" class="btn-primary" onclick="closeModal()">حسنًا</button>
+      `);
+    }
+
+    function closeModal() {
+      document.getElementById("modalBackdrop").classList.remove("open");
+      document.getElementById("modalSheet").innerHTML = "";
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target && e.target.id === "modalBackdrop") {
+        closeModal();
+      }
+    }
+
+    syncShellVisibility();
+  </script>
+</body>
+</html>
